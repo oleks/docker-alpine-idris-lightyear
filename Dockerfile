@@ -14,11 +14,17 @@ FROM oleks2/alpine-idris:1.0
 
 MAINTAINER oleks <oleks@oleks.info>
 
+RUN apk --no-cache add \
+  --virtual .build-dependencies \
+  alpine-sdk
+
 RUN git clone https://github.com/ziman/lightyear.git
 
 RUN \
   cd lightyear && \
   git reset --hard 48cc7d897f74c5f2354d3061d218f9d8d9d6e342 && \
   make install
+
+RUN apk del .build-dependencies
 
 CMD ["idris"]
